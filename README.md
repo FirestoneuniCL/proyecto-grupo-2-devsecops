@@ -30,8 +30,8 @@ Proyecto académico de **Desarrollo Seguro (CI3064)**, caso 2 *HealthTech*. Una 
 | Alumno | Rol | Actividades principales |
 |---|---|---|
 | **Hans Fagerstrom** | Desarrollador DevSecOps | Estructura del repositorio, API vulnerable, refactorización de `src/seguro` (autorización, listas blancas, HTTPS/TLS, auditoría), script `auditoria.sh` y documentos de gobernanza. |
-| **Diego Zapata** | Auditor de seguridad / Pentester | Ejecución y verificación de scripts de auditoría automatizada (`auditoria.sh`), recolección de evidencias forenses OWASP Top 10 y redacción de reportes. |
-| **Martín Ottermann** | Responsable de la aplicación / Gestor de Riesgos | Investigación normativa (ISO/IEC 27034), elaboración y control de versiones del ONF Corporativo, diseño del Manifiesto Ético y gobernanza Docs-as-Code. |
+| **Martin Ottermann** | Auditor de seguridad / Pentester | Ejecución y verificación de scripts de auditoría automatizada (`auditoria.sh`), recolección de evidencias forenses OWASP Top 10 y redacción de reportes. |
+| **Diego Zapata** | Responsable de la aplicación / Gestor de Riesgos | Investigación normativa (ISO/IEC 27034), elaboración y control de versiones del ONF Corporativo, diseño del Manifiesto Ético y gobernanza Docs-as-Code. |
 
 > El historial de commits del repositorio respalda la autoría de cada actividad.
 
