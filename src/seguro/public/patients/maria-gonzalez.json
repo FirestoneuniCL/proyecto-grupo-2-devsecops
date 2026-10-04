@@ -1,0 +1,15 @@
+{
+  "patientId": 2,
+  "name": "Maria Gonzalez",
+  "ssn": "987-65-4321",
+  "dateOfBirth": "1990-03-22",
+  "address": "Avenida Siempre Viva 742, Springfield",
+  "phone": "555-0201",
+  "email": "maria.gonzalez@email.com",
+  "emergencyContact": "Carlos Gonzalez (esposo) - 555-0202",
+  "bloodType": "A-",
+  "allergies": ["Aspirina"],
+  "chronicConditions": ["Asma bronquial"],
+  "insuranceNumber": "INS-009876543",
+  "note": "A04: Este archivo es accesible publicamente via web en /patients/maria-gonzalez.json"
+}

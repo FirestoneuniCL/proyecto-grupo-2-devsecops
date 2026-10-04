@@ -1,28 +1,46 @@
 const express = require('express');
-const dns = require('dns').promises;
-const net = require('net');
 const axios = require('axios');
 const { authenticate } = require('../middleware');
 
 const router = express.Router();
-const allowedHosts = new Set((process.env.ALLOWED_EXTERNAL_HOSTS || '').split(',').map((host) => host.trim().toLowerCase()).filter(Boolean));
 
-function isPrivateIp(address) {
-  if (net.isIPv4(address)) return /^(10\.|127\.|169\.254\.|192\.168\.|172\.(1[6-9]|2\d|3[0-1])\.)/.test(address);
-  return address === '::1' || address.startsWith('fc') || address.startsWith('fd') || address.startsWith('fe80:');
-}
-
+// A10: SSRF (Server-Side Request Forgery) — the server fetches arbitrary URLs
+// provided by the client with no validation or allowlist.
+//
+// This can be exploited to:
+//   - Access internal services (e.g., http://169.254.169.254/latest/meta-data/)
+//   - Scan internal network ports
+//   - Access localhost services
+//   - Fetch files via file:// protocol (if not blocked by axios)
 router.get('/fetch-external-record', authenticate, async (req, res) => {
+  const { url } = req.query;
+
+  if (!url) {
+    return res.status(400).json({ error: 'URL requerida' });
+  }
+
+  // No URL validation, no allowlist, no scheme restriction
+  // The server will fetch ANY URL the client provides
   try {
-    const target = new URL(typeof req.query.url === 'string' ? req.query.url : '');
-    if (target.protocol !== 'https:' || !allowedHosts.has(target.hostname.toLowerCase())) return res.status(400).json({ error: 'Destino externo no permitido' });
-    const addresses = await dns.lookup(target.hostname, { all: true });
-    if (addresses.some(({ address }) => isPrivateIp(address))) return res.status(400).json({ error: 'Destino externo no permitido' });
-    const response = await axios.get(target.toString(), { maxRedirects: 0, timeout: 5000, maxContentLength: 2 * 1024 * 1024, responseType: 'text' });
-    res.json({ status: response.status, data: response.data });
-  } catch (error) {
-    console.error('External record request failed', error);
-    res.status(502).json({ error: 'No se pudo obtener el recurso externo' });
+    const response = await axios.get(url, {
+      // Follows redirects, no timeout, accepts any status
+      maxRedirects: 5,
+      timeout: 10000,
+      // No restriction on internal IPs, localhost, or metadata endpoints
+    });
+
+    res.json({
+      url,
+      status: response.status,
+      headers: response.headers,
+      data: response.data,
+    });
+  } catch (err) {
+    res.status(502).json({
+      error: 'Error al obtener el recurso externo',
+      details: err.message,
+      requestedUrl: url,
+    });
   }
 });
 

@@ -1,0 +1,15 @@
+{
+  "patientId": 1,
+  "name": "Juan Perez",
+  "ssn": "123-45-6789",
+  "dateOfBirth": "1985-06-15",
+  "address": "Calle Falsa 123, Springfield",
+  "phone": "555-0101",
+  "email": "juan.perez@email.com",
+  "emergencyContact": "Maria Perez (esposa) - 555-0102",
+  "bloodType": "O+",
+  "allergies": ["Penicilina", "Mariscos"],
+  "chronicConditions": ["Hipertension", "Diabetes Tipo 2"],
+  "insuranceNumber": "INS-001234567",
+  "note": "A04: Este archivo es accesible publicamente via web en /patients/juan-perez.json"
+}

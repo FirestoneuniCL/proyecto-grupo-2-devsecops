@@ -1,42 +1,46 @@
 const express = require('express');
-const crypto = require('crypto');
-const { users, hashPassword } = require('../database');
-const { issueToken } = require('../middleware');
+const { users } = require('../database');
+const { activeTokens } = require('../middleware');
 
 const router = express.Router();
-const loginAttempts = new Map();
-const recoveryAttempts = new Map();
-const WINDOW_MS = 15 * 60 * 1000;
-const MAX_ATTEMPTS = 5;
 
-function allowed(attempts, key) {
-  const now = Date.now();
-  const current = attempts.get(key);
-  if (!current || now - current.startedAt > WINDOW_MS) {
-    attempts.set(key, { startedAt: now, count: 1 });
-    return true;
-  }
-  if (current.count >= MAX_ATTEMPTS) return false;
-  current.count += 1;
-  return true;
-}
-
+// Login endpoint
 router.post('/login', (req, res) => {
-  const username = typeof req.body?.username === 'string' ? req.body.username : '';
-  const password = typeof req.body?.password === 'string' ? req.body.password : '';
-  if (!allowed(loginAttempts, req.ip)) return res.status(429).json({ error: 'Demasiados intentos. Intente mas tarde.' });
-  const user = users.find((candidate) => candidate.username === username);
-  const suppliedHash = hashPassword(password);
-  const valid = user && crypto.timingSafeEqual(Buffer.from(suppliedHash, 'hex'), Buffer.from(user.passwordHash, 'hex'));
-  if (!valid) return res.status(401).json({ error: 'Credenciales invalidas' });
-  loginAttempts.delete(req.ip);
-  res.json({ token: issueToken(user.id), role: user.role, username: user.username });
+  const { username, password } = req.body;
+  const user = users.find((u) => u.username === username && u.password === password);
+  if (!user) {
+    return res.status(401).json({ error: 'Credenciales invalidas' });
+  }
+  const token = `token-${user.id}-${Date.now()}`;
+  activeTokens[token] = user.id;
+  res.json({ token, role: user.role, username: user.username });
 });
 
+// A07: Password recovery via trivial security questions without rate limiting.
+// No attempt counter, no lockout, no delay — brute force is trivial.
+const recoveryAttempts = {}; // intentionally unbounded
+
 router.post('/recover-password', (req, res) => {
-  const username = typeof req.body?.username === 'string' ? req.body.username : '';
-  if (!allowed(recoveryAttempts, req.ip)) return res.status(429).json({ error: 'Demasiados intentos. Intente mas tarde.' });
-  res.status(202).json({ message: 'Si la cuenta existe, recibira instrucciones por un canal verificado.' });
+  const { username, securityAnswer, newPassword } = req.body;
+
+  const user = users.find((u) => u.username === username);
+  if (!user) {
+    return res.status(404).json({ error: 'Usuario no encontrado' });
+  }
+
+  // No rate limiting applied — unlimited attempts allowed
+  // No lockout after N failed attempts
+  if (user.securityAnswer !== securityAnswer) {
+    return res.status(401).json({
+      error: 'Respuesta de seguridad incorrecta',
+      hint: 'La pregunta de seguridad es: ' + user.securityQuestion,
+      attempts: (recoveryAttempts[username] = (recoveryAttempts[username] || 0) + 1),
+    });
+  }
+
+  user.password = newPassword;
+  delete recoveryAttempts[username];
+  res.json({ message: 'Contrasena actualizada exitosamente', newPassword });
 });
 
 module.exports = router;

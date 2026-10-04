@@ -1,20 +1,34 @@
 const express = require('express');
-const { patients } = require('../database');
-const { authenticate, canAccessPatient } = require('../middleware');
-
 const router = express.Router();
 
-router.get('/record/:id', authenticate, (req, res) => {
-  const patientId = Number(req.params.id);
-  if (!Number.isInteger(patientId) || !canAccessPatient(req.user, patientId)) return res.status(403).json({ error: 'No autorizado' });
-  const patient = patients.find((candidate) => candidate.id === patientId);
-  if (!patient) return res.status(404).json({ error: 'Paciente no encontrado' });
-  res.json({ id: patient.id, name: patient.name, bloodType: patient.bloodType, allergies: patient.allergies, fullHistory: patient.history });
-});
+router.get('/:id', (req, res) => {
+    try {
+        const idSolicitado = req.params.id;
 
-router.get('/patients', authenticate, (req, res) => {
-  const visible = req.user.role === 'doctor' ? patients : patients.filter((patient) => patient.id === req.user.patientId);
-  res.json(visible.map(({ id, name }) => ({ id, name })));
+        // 1. BLINDAJE REGEX: El ID debe ser exclusivamente un número.
+        const idRegex = /^[0-9]+$/;
+
+        if (!idRegex.test(idSolicitado)) {
+            return res.status(400).json({ 
+                error: "Violación de política ONF: Formato de ID inválido.", 
+                codigo: "SEC-400" 
+            });
+        }
+
+        // 2. CONTROL DE ACCESO (A01): Verificación de propiedad del recurso.
+        // Simulamos que req.user existe gracias al token de sesión.
+        if (req.user && req.user.role === 'paciente' && req.user.patientId !== parseInt(idSolicitado)) {
+            return res.status(403).json({ 
+                error: "Acceso denegado: No tienes permiso para ver esta ficha.", 
+                codigo: "SEC-403" 
+            });
+        }
+
+        res.json({ status: "OK", ficha: idSolicitado, datos: "Información médica confidencial protegida" });
+
+    } catch (error) {
+        res.status(500).json({ error: "Error interno.", codigo: "SEC-500" });
+    }
 });
 
 module.exports = router;
