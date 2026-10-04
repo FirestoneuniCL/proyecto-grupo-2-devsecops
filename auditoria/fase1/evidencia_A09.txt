@@ -1,5 +1,5 @@
 # Evidencia A09 - Modificación de receta sin auditoría
-# Fecha: 2026-10-03 23:12:58   Fase: fase1   Objetivo: localhost
+# Fecha: 2026-10-04 03:40:21   Fase: fase1   Objetivo: localhost
 # Comando: curl -i -s -X PUT http://localhost:3000/api/prescription/1 -H 'Authorization: <TOKEN_DOCTOR>' -H 'Content-Type: application/json' -d '{"dosage":"DOSIS-MODIFICADA-PARA-AUDITORIA"}'
 # Esperado: HTTP 200: receta modificada, sin registro de auditoría real
 # ----------------------------------------------------------
@@ -8,7 +8,7 @@ X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
 Content-Length: 313
 ETag: W/"139-lSFByJGXlUZL5UoLOJb+MTCF6O8"
-Date: Sun, 04 Oct 2026 02:12:58 GMT
+Date: Sun, 04 Oct 2026 06:40:21 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 

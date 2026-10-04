@@ -1,5 +1,5 @@
 # Evidencia A02 - Cifrado: receta por HTTP
-# Fecha: 2026-10-03 23:12:56   Fase: fase1   Objetivo: localhost
+# Fecha: 2026-10-04 03:40:20   Fase: fase1   Objetivo: localhost
 # Comando: curl -i -s http://localhost:3000/api/prescription/1 -H 'Authorization: <TOKEN_DOCTOR>'
 # Esperado: HTTP 200 por HTTP, firma digital en texto claro
 # ----------------------------------------------------------
@@ -8,7 +8,7 @@ X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
 Content-Length: 314
 ETag: W/"13a-VJIheIvaTe+2bdaQxgQv2N1/o10"
-Date: Sun, 04 Oct 2026 02:12:56 GMT
+Date: Sun, 04 Oct 2026 06:40:19 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
@@ -17,7 +17,7 @@ Keep-Alive: timeout=5
 # [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
 
 # Evidencia A02 - Cifrado: receta por HTTPS
-# Fecha: 2026-10-03 23:12:56   Fase: fase1   Objetivo: localhost
+# Fecha: 2026-10-04 03:40:20   Fase: fase1   Objetivo: localhost
 # Comando: curl -i -s -k https://localhost:3443/api/prescription/1 -H 'Authorization: <TOKEN_DOCTOR>'
 # Esperado: Falla: el servidor no tiene TLS (exit code 7/35)
 # ----------------------------------------------------------

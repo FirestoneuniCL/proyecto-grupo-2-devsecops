@@ -1,5 +1,5 @@
 # Evidencia A07 - Recuperación de contraseña sin límite de intentos
-# Fecha: 2026-10-03 23:12:58   Fase: fase1   Objetivo: localhost
+# Fecha: 2026-10-04 03:40:20   Fase: fase1   Objetivo: localhost
 # Comando: curl -i -s -X POST http://localhost:3000/api/recover-password (5 intentos con lista de respuestas)
 # Esperado: Todos los intentos se procesan; el 5º acierta y cambia la contraseña (fuerza bruta viable)
 # (newPassword = la misma contraseña original, para no alterar el laboratorio)
@@ -10,7 +10,7 @@ X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
 Content-Length: 117
 ETag: W/"75-16gqjhpw8TaCL2SpJ8vqwa2DgNI"
-Date: Sun, 04 Oct 2026 02:12:58 GMT
+Date: Sun, 04 Oct 2026 06:40:20 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
@@ -22,7 +22,7 @@ X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
 Content-Length: 117
 ETag: W/"75-6XVOkxnGw30MOhXw8OnGM09MJmU"
-Date: Sun, 04 Oct 2026 02:12:58 GMT
+Date: Sun, 04 Oct 2026 06:40:20 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
@@ -34,7 +34,7 @@ X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
 Content-Length: 117
 ETag: W/"75-tVmT7MRuHd9quCwBe2JAoBPoaJc"
-Date: Sun, 04 Oct 2026 02:12:58 GMT
+Date: Sun, 04 Oct 2026 06:40:20 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
@@ -46,7 +46,7 @@ X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
 Content-Length: 117
 ETag: W/"75-/XG2sas608WdbZKVyZEgCrR2R7g"
-Date: Sun, 04 Oct 2026 02:12:58 GMT
+Date: Sun, 04 Oct 2026 06:40:20 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
@@ -58,7 +58,7 @@ X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
 Content-Length: 75
 ETag: W/"4b-zAtkQcIX/QQX3cT1p67AVM2FVwk"
-Date: Sun, 04 Oct 2026 02:12:58 GMT
+Date: Sun, 04 Oct 2026 06:40:20 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 

@@ -1,5 +1,5 @@
 # Evidencia A04 - Datos de pacientes en carpeta pública
-# Fecha: 2026-10-03 23:12:56   Fase: fase1   Objetivo: localhost
+# Fecha: 2026-10-04 03:40:20   Fase: fase1   Objetivo: localhost
 # Comando: curl -i -s http://localhost:3000/patients/juan-perez.json
 # Esperado: HTTP 200: ficha de Juan Perez descargable sin login
 # ----------------------------------------------------------
@@ -11,7 +11,7 @@ Last-Modified: Fri, 02 Oct 2026 19:49:32 GMT
 ETag: W/"204-1a0fe2a2ce0"
 Content-Type: application/json; charset=UTF-8
 Content-Length: 516
-Date: Sun, 04 Oct 2026 02:12:56 GMT
+Date: Sun, 04 Oct 2026 06:40:20 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 

