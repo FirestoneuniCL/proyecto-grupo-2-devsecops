@@ -42,7 +42,7 @@ Los datos de pacientes se guardan en carpetas publicas accesibles via web sin au
 
 ### A06 - Vulnerable and Outdated Components (Componentes Vulnerables y Desactualizados)
 
-Dependencia del paquete NPM `cryptiles` (version 3.1.2), descontinuado por CVE-2018-1000620 (ataque de sincronizacion en comparacion HMAC).
+Dependencia del paquete NPM `cryptiles` (version 3.1.2), con vulnerabilidades conocidas (3 vulnerabilidades altas segun `npm audit`, en `cryptiles` y sus dependencias `boom` y `hoek`).
 
 ### A07 - Identification and Authentication Failures (Fallos de Identificacion y Autenticacion)
 

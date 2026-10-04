@@ -29,7 +29,7 @@ Cada vulnerabilidad de MediCare Core (acceso a fichas ajenas, tráfico sin cifra
 - **Nueva ley de protección de datos personales (Ley 21.719)**: refuerza derechos de las personas y deberes de quien trata sus datos.
 - **Ley 20.584**, derechos y deberes de los pacientes: establece el carácter **reservado de la ficha clínica**.
 - **Ley 21.459**, sobre delitos informáticos: acceso ilícito, interceptación y daño a sistemas.
-- **Ley 21.563**, Ley Marco de Ciberseguridad.
+- **Ley 21.663**, Ley Marco de Ciberseguridad.
 
 ## 4. Responsabilidad del desarrollador
 

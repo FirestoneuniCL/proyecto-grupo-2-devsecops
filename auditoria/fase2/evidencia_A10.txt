@@ -1,5 +1,5 @@
 # Evidencia A10 - SSRF: el servidor consulta una URL interna
-# Fecha: 2026-10-04 03:34:41   Fase: fase2   Objetivo: localhost
+# Fecha: 2026-10-04 15:56:40   Fase: fase2   Objetivo: localhost
 # Comando: curl -i -s -k https://localhost:3443/api/fetch-external-record?url=http://127.0.0.1:3000/ -H 'Authorization: <TOKEN_DOCTOR>'
 # Esperado: HTTP 400/403: destino no permitido por lista blanca
 # ----------------------------------------------------------
@@ -15,7 +15,7 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains
 Content-Type: application/json; charset=utf-8
 Content-Length: 51
 ETag: W/"33-rXspREB3A6OYyhn/340m3vbWZmM"
-Date: Sun, 04 Oct 2026 06:34:41 GMT
+Date: Sun, 04 Oct 2026 18:56:40 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
