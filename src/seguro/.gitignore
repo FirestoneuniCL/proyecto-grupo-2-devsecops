@@ -1,0 +1,9 @@
+node_modules
+.env
+.idea/
+.DS_Store
+# A02: la clave privada TLS nunca se sube al repositorio
+certs/
+# A09/A08: logs de auditoria y archivos subidos son datos de ejecucion
+logs/
+storage/

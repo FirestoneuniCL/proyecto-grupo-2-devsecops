@@ -1,39 +1,67 @@
 const express = require('express');
+const { users, hashSecret, verifySecret } = require('../database');
+const { createToken, revokeUserTokens, rateLimit } = require('../middleware');
+const { RE, isValid, onlyKeys, reject, bad } = require('../validate');
+const { audit } = require('../audit');
+
 const router = express.Router();
-const rateLimit = require('express-rate-limit');
+const DUMMY_HASH = hashSecret('relleno-para-tiempo-constante');
+const MIN15 = 15 * 60 * 1000;
 
-// 1. MITIGACIÓN A07: Bloqueo de tasa contra fuerza bruta
-const limitadorFuerzaBruta = rateLimit({
-    windowMs: 15 * 60 * 1000, 
-    max: 3, 
-    message: {
-        error: "Demasiados intentos fallidos. Cuenta bloqueada temporalmente.",
-        codigo: "SEC-429"
-    }
+// ---------------------------------------------------------------- Login (A07)
+const loginLimiter = rateLimit({
+  windowMs: MIN15, max: 20, event: 'login_rate_limited',
+  key: (req) => `login:${req.socket.remoteAddress}`,
 });
 
-router.post('/login', (req, res) => {
-    res.json({ status: "OK", token: "token-simulado-123" });
+router.post('/login', loginLimiter, (req, res) => {
+  const { username, password } = req.body || {};
+  if (!onlyKeys(req.body, ['username', 'password']) || !isValid(username, RE.username) ||
+      typeof password !== 'string' || password.length < 1 || password.length > 100) {
+    return bad(res);
+  }
+  const user = users.find((u) => u.username === username);
+  // Se hace el calculo del hash aunque el usuario no exista (evita enumerar usuarios por tiempo)
+  const ok = user ? verifySecret(password, user.passwordHash) : (verifySecret(password, DUMMY_HASH), false);
+  if (!ok) {
+    audit('login_fail', req, { username });
+    return reject(res, 401, 'SEC-401', 'Credenciales invalidas');
+  }
+  audit('login_ok', req, { username });
+  res.json({ token: createToken(user), role: user.role, username: user.username, expiresInSeconds: 1800 });
 });
 
-router.post('/recover-password', limitadorFuerzaBruta, (req, res) => {
-    try {
-        const { username, securityAnswer } = req.body;
+// ---------------------------------------------------------------- Recuperacion (A07)
+// Antes: sin limite de intentos, revelaba la pregunta ("hint"), el numero de intentos y
+// devolvia la contrasena nueva en la respuesta. Ahora: maximo 3 intentos por usuario+IP
+// cada 15 minutos (luego HTTP 429), respuestas genericas y respuesta guardada con hash.
+// NOTA: en un sistema real se reemplaza la pregunta por un enlace/codigo de un solo uso
+// enviado por correo o MFA; las preguntas de seguridad son un metodo debil.
+const recoverLimiter = rateLimit({
+  windowMs: MIN15, max: 3, event: 'recovery_rate_limited',
+  key: (req) => `rec:${req.socket.remoteAddress}:${String((req.body && req.body.username) || '').slice(0, 30)}`,
+});
 
-        // 2. BLINDAJE REGEX (Lista Blanca)
-        const alfanumericoRegex = /^[a-zA-Z0-9_]{3,20}$/;
-        if (!username || !alfanumericoRegex.test(username)) {
-            return res.status(400).json({ error: "Usuario inválido.", codigo: "SEC-400" });
-        }
-
-        if (securityAnswer !== "RespuestaCorrectaSecreta") {
-            return res.status(401).json({ error: "Credenciales incorrectas.", codigo: "SEC-401" });
-        }
-
-        res.json({ status: "OK", mensaje: "Contraseña actualizada bajo estándares seguros." });
-    } catch (error) {
-        res.status(500).json({ error: "Error interno.", codigo: "SEC-500" });
-    }
+router.post('/recover-password', recoverLimiter, (req, res) => {
+  const { username, securityAnswer, newPassword } = req.body || {};
+  if (!onlyKeys(req.body, ['username', 'securityAnswer', 'newPassword']) ||
+      !isValid(username, RE.username) || !isValid(securityAnswer, RE.answer) ||
+      typeof newPassword !== 'string') {
+    return bad(res);
+  }
+  const user = users.find((u) => u.username === username);
+  const ok = user ? verifySecret(securityAnswer.toLowerCase(), user.answerHash) : (verifySecret('x', DUMMY_HASH), false);
+  if (!ok) {
+    audit('recovery_fail', req, { username });
+    return reject(res, 401, 'SEC-401', 'Datos de recuperacion invalidos'); // mismo mensaje exista o no el usuario
+  }
+  if (!RE.password.test(newPassword)) {
+    return bad(res, 'La nueva contrasena debe tener entre 10 y 100 caracteres, con letras y numeros');
+  }
+  user.passwordHash = hashSecret(newPassword);
+  revokeUserTokens(user.id); // cierra todas las sesiones abiertas de ese usuario
+  audit('recovery_ok', req, { username });
+  res.json({ message: 'Contrasena actualizada' }); // ya no se devuelve la contrasena
 });
 
 module.exports = router;

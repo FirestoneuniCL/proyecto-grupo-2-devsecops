@@ -1,33 +1,37 @@
 const express = require('express');
+const { patients, canAccessPatient } = require('../database');
+const { authenticate } = require('../middleware');
+const { RE, isValid, reject, bad } = require('../validate');
+const { audit } = require('../audit');
+
 const router = express.Router();
+const maskSsn = (s) => s.replace(/^\d{3}-\d{2}/, '***-**'); // minimizacion de datos (A04)
 
-router.get('/record/:id', (req, res) => {
-    try {
-        const idSolicitado = req.params.id;
+// A01: control de acceso EN EL SERVIDOR, para cada recurso (ONF-01).
+//  - paciente: solo su propia ficha
+//  - doctor: solo pacientes que tiene asignados
+router.get('/record/:id', authenticate, (req, res) => {
+  if (!isValid(req.params.id, RE.id)) return bad(res);
+  const patientId = Number(req.params.id);
 
-        // 1. BLINDAJE REGEX: Obliga a que el ID sea numérico
-        const idRegex = /^[0-9]+$/;
+  if (!canAccessPatient(req.user, patientId)) {
+    audit('access_denied', req, { resource: 'record', patientId });
+    return reject(res, 403, 'SEC-403', 'Acceso denegado');
+  }
+  const patient = patients.find((p) => p.id === patientId);
+  if (!patient) return reject(res, 404, 'SEC-404', 'Recurso no encontrado');
 
-        if (!idRegex.test(idSolicitado)) {
-            return res.status(400).json({ 
-                error: "Violación de política ONF: Formato de ID inválido.", 
-                codigo: "SEC-400" 
-            });
-        }
+  audit('record_read', req, { patientId });
+  res.json({
+    id: patient.id, name: patient.name, ssn: maskSsn(patient.ssn), bloodType: patient.bloodType,
+    allergies: patient.allergies, fullHistory: patient.history,
+  });
+});
 
-        // 2. CONTROL DE ACCESO (A01): Validación de autorización
-        if (req.user && req.user.role === 'paciente' && req.user.patientId !== parseInt(idSolicitado)) {
-            return res.status(403).json({ 
-                error: "Acceso denegado: No tienes permiso para ver esta ficha.", 
-                codigo: "SEC-403" 
-            });
-        }
-
-        res.json({ status: "OK", ficha: idSolicitado, datos: "Información médica confidencial" });
-
-    } catch (error) {
-        res.status(500).json({ error: "Error interno.", codigo: "SEC-500" });
-    }
+// Antes listaba a TODOS los pacientes a cualquier usuario autenticado.
+router.get('/patients', authenticate, (req, res) => {
+  if (req.user.role !== 'doctor') return reject(res, 403, 'SEC-403', 'Acceso denegado');
+  res.json(patients.filter((p) => req.user.patients.includes(p.id)).map((p) => ({ id: p.id, name: p.name })));
 });
 
 module.exports = router;
