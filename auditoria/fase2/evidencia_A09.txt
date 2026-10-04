@@ -1,0 +1,18 @@
+# Evidencia A09 - Modificación de receta sin auditoría
+# Fecha: 2026-10-04 02:25:53   Fase: fase2   Objetivo: localhost
+# Comando: curl -i -s -k -X PUT https://localhost:3443/api/prescription/1 -H 'Authorization: <TOKEN_DOCTOR>' -H 'Content-Type: application/json' -d '{"dosage":"DOSIS-MODIFICADA-PARA-AUDITORIA"}'
+# Esperado: HTTP 200 y se genera una línea en logs/audit.log (usuario, IP, antes/después)
+# ----------------------------------------------------------
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 119
+ETag: W/"77-JWOkr1mIe7kv13dQE92PRwNh0Rs"
+Date: Sun, 04 Oct 2026 05:25:53 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"status":"OK","mensaje":"Modificación procesada. El evento ha sido registrado en la bitácora forense.","receta":"1"}
+
+# [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+

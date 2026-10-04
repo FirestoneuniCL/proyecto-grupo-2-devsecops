@@ -1,0 +1,37 @@
+# Evidencia A02 - Cifrado: receta por HTTP
+# Fecha: 2026-10-04 02:25:51   Fase: fase2   Objetivo: localhost
+# Comando: curl -i -s http://localhost:3000/api/prescription/1 -H 'Authorization: <TOKEN_DOCTOR>'
+# Esperado: HTTP 301/403: el HTTP plano ya no entrega la receta
+# ----------------------------------------------------------
+
+
+# [curl exit code: 7 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+
+# Evidencia A02 - Cifrado: receta por HTTPS
+# Fecha: 2026-10-04 02:25:51   Fase: fase2   Objetivo: localhost
+# Comando: curl -i -s -k https://localhost:3443/api/prescription/1 -H 'Authorization: <TOKEN_DOCTOR>'
+# Esperado: HTTP 200 sobre TLS, con cabecera Strict-Transport-Security
+# ----------------------------------------------------------
+HTTP/1.1 404 Not Found
+X-Powered-By: Express
+Content-Security-Policy: default-src 'none'
+X-Content-Type-Options: nosniff
+Content-Type: text/html; charset=utf-8
+Content-Length: 157
+Date: Sun, 04 Oct 2026 05:25:51 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Cannot GET /api/prescription/1</pre>
+</body>
+</html>
+
+# [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+

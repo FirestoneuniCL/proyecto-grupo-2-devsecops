@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/:id', (req, res) => {
+router.get('/record/:id', (req, res) => {
     try {
         const idSolicitado = req.params.id;
 
-        // 1. BLINDAJE REGEX: El ID debe ser exclusivamente un número.
+        // 1. BLINDAJE REGEX: Obliga a que el ID sea numérico
         const idRegex = /^[0-9]+$/;
 
         if (!idRegex.test(idSolicitado)) {
@@ -15,8 +15,7 @@ router.get('/:id', (req, res) => {
             });
         }
 
-        // 2. CONTROL DE ACCESO (A01): Verificación de propiedad del recurso.
-        // Simulamos que req.user existe gracias al token de sesión.
+        // 2. CONTROL DE ACCESO (A01): Validación de autorización
         if (req.user && req.user.role === 'paciente' && req.user.patientId !== parseInt(idSolicitado)) {
             return res.status(403).json({ 
                 error: "Acceso denegado: No tienes permiso para ver esta ficha.", 
@@ -24,7 +23,7 @@ router.get('/:id', (req, res) => {
             });
         }
 
-        res.json({ status: "OK", ficha: idSolicitado, datos: "Información médica confidencial protegida" });
+        res.json({ status: "OK", ficha: idSolicitado, datos: "Información médica confidencial" });
 
     } catch (error) {
         res.status(500).json({ error: "Error interno.", codigo: "SEC-500" });

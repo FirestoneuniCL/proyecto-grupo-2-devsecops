@@ -2,10 +2,11 @@ const express = require('express');
 const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
-const https = require('https'); // Nuevo módulo para A02
-const fs = require('fs');       // Nuevo módulo para A02
+const https = require('https'); 
+const fs = require('fs');       
+const helmet = require('helmet'); // A05: Añade cabeceras de seguridad HTTP
 
-const { authenticate, errorHandler } = require('./src/middleware');
+const { authenticate } = require('./src/middleware'); // Se elimina el errorHandler vulnerable
 const authRoutes = require('./src/routes/auth');
 const recordsRoutes = require('./src/routes/records');
 const prescriptionsRoutes = require('./src/routes/prescriptions');
@@ -14,37 +15,31 @@ const filesRoutes = require('./src/routes/files');
 const externalRoutes = require('./src/routes/external');
 
 const app = express();
-const PORT = 3000;
 
-// Configuración de archivos estáticos de forma segura
-app.use(express.static(path.join(__dirname, 'public')));
+// A05 SEGURO: Activación de Helmet para proteger cabeceras
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Ruta raíz principal (Hardening: Oculta información sensible del sistema operativo)
+// Ruta raíz (Oculta información del SO)
 app.get('/', (req, res) => {
   res.json({
     app: 'API de Recetas e Historiales Clínicos (Segura)',
     version: '2.0.0',
     environment: process.env.NODE_ENV || 'production',
-    serverInfo: {
-      estado: 'Operativo y Blindado',
-    },
+    serverInfo: { estado: 'Operativo y Blindado' }
   });
 });
 
-// A06 SEGURO: Verificación de firmas utilizando criptografía nativa y segura (timingSafeEqual)
+// A06 SEGURO: Verificación de firmas con timingSafeEqual
 app.get('/api/verify-signature', authenticate, (req, res) => {
   const { a, b } = req.query;
-  if (!a || !b) {
-    return res.status(400).json({ error: 'Parámetros a y b requeridos' });
-  }
+  if (!a || !b) return res.status(400).json({ error: 'Parámetros a y b requeridos' });
   
   try {
     const bufA = Buffer.from(a);
     const bufB = Buffer.from(b);
     
-    // Validamos que tengan la misma longitud antes de comparar para evitar excepciones
     if (bufA.length !== bufB.length) {
       return res.json({ valid: false, mensaje: 'Longitudes de firma desiguales' });
     }
@@ -56,7 +51,7 @@ app.get('/api/verify-signature', authenticate, (req, res) => {
   }
 });
 
-// Enrutamiento modular de la API
+// Enrutamiento modular
 app.use('/api', authRoutes);
 app.use('/api', recordsRoutes);
 app.use('/api/diagnosis', diagnosisRoutes);
@@ -64,7 +59,7 @@ app.use('/api', prescriptionsRoutes);
 app.use('/api', filesRoutes);
 app.use('/api', externalRoutes);
 
-// A04 SEGURO: Bloqueo explícito de acceso público a expedientes médicos
+// A04 SEGURO: Bloqueo explícito de acceso público a expedientes
 app.use('/patients', (req, res) => {
     res.status(403).json({
         error: "Violación de política ONF: Los expedientes médicos no son de acceso público.",
@@ -72,11 +67,10 @@ app.use('/patients', (req, res) => {
     });
 });
 
-// Configuración de archivos estáticos (ahora protegida)
+// Archivos estáticos protegidos (debe ir después del bloqueo de /patients)
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-// A05 SEGURO: Interceptor global de errores corporativos (evita Stack Traces)
+// A05 SEGURO: Interceptor global de errores corporativos (Oculta Stack Trace)
 app.use((err, req, res, next) => {
     console.error("Alerta de Seguridad: Intento de solicitud malformada detectada.");
     res.status(400).json({
@@ -85,15 +79,12 @@ app.use((err, req, res, next) => {
     });
 });
 
-// A02 SEGURO: Carga de certificados y levantamiento de servidor HTTPS
+// A02 SEGURO: Servidor HTTPS estricto
 const opcionesSSL = {
     key: fs.readFileSync(path.join(__dirname, 'server.key')),
     cert: fs.readFileSync(path.join(__dirname, 'server.cert'))
 };
 
-const HTTPS_PORT = 3443;
-
-https.createServer(opcionesSSL, app).listen(HTTPS_PORT, () => {
-    console.log(`Servidor SEGURO corriendo en https://localhost:${HTTPS_PORT}`);
-    console.log('ESTADO: Aplicación completamente blindada contra OWASP Top 10.');
+https.createServer(opcionesSSL, app).listen(3443, () => {
+    console.log('Servidor SEGURO corriendo en https://localhost:3443');
 });

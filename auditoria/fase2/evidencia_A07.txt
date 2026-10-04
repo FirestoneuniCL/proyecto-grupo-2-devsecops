@@ -1,0 +1,86 @@
+# Evidencia A07 - Recuperación de contraseña sin límite de intentos
+# Fecha: 2026-10-04 02:25:53   Fase: fase2   Objetivo: localhost
+# Comando: curl -i -s -X POST https://localhost:3443/api/recover-password (5 intentos con lista de respuestas)
+# Esperado: Bloqueo temporal HTTP 429 tras pocos intentos; nunca llega a acertar
+# (newPassword = la misma contraseña original, para no alterar el laboratorio)
+# ----------------------------------------------------------
+>>> intento con respuesta 'rex'
+HTTP/1.1 429 Too Many Requests
+X-Powered-By: Express
+X-RateLimit-Limit: 3
+X-RateLimit-Remaining: 0
+Date: Sun, 04 Oct 2026 05:25:53 GMT
+X-RateLimit-Reset: 1791092006
+Retry-After: 453
+Content-Type: application/json; charset=utf-8
+Content-Length: 121
+ETag: W/"79-HnreQXVLy9LoAtcAiV1V64DQZ0I"
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"error":"Violación de política ONF: Demasiados intentos fallidos. Cuenta bloqueada temporalmente.","codigo":"SEC-429"}
+
+>>> intento con respuesta 'max'
+HTTP/1.1 429 Too Many Requests
+X-Powered-By: Express
+X-RateLimit-Limit: 3
+X-RateLimit-Remaining: 0
+Date: Sun, 04 Oct 2026 05:25:53 GMT
+X-RateLimit-Reset: 1791092006
+Retry-After: 453
+Content-Type: application/json; charset=utf-8
+Content-Length: 121
+ETag: W/"79-HnreQXVLy9LoAtcAiV1V64DQZ0I"
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"error":"Violación de política ONF: Demasiados intentos fallidos. Cuenta bloqueada temporalmente.","codigo":"SEC-429"}
+
+>>> intento con respuesta 'toby'
+HTTP/1.1 429 Too Many Requests
+X-Powered-By: Express
+X-RateLimit-Limit: 3
+X-RateLimit-Remaining: 0
+Date: Sun, 04 Oct 2026 05:25:53 GMT
+X-RateLimit-Reset: 1791092006
+Retry-After: 453
+Content-Type: application/json; charset=utf-8
+Content-Length: 121
+ETag: W/"79-HnreQXVLy9LoAtcAiV1V64DQZ0I"
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"error":"Violación de política ONF: Demasiados intentos fallidos. Cuenta bloqueada temporalmente.","codigo":"SEC-429"}
+
+>>> intento con respuesta 'luna'
+HTTP/1.1 429 Too Many Requests
+X-Powered-By: Express
+X-RateLimit-Limit: 3
+X-RateLimit-Remaining: 0
+Date: Sun, 04 Oct 2026 05:25:53 GMT
+X-RateLimit-Reset: 1791092006
+Retry-After: 453
+Content-Type: application/json; charset=utf-8
+Content-Length: 121
+ETag: W/"79-HnreQXVLy9LoAtcAiV1V64DQZ0I"
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"error":"Violación de política ONF: Demasiados intentos fallidos. Cuenta bloqueada temporalmente.","codigo":"SEC-429"}
+
+>>> intento con respuesta 'firulais'
+HTTP/1.1 429 Too Many Requests
+X-Powered-By: Express
+X-RateLimit-Limit: 3
+X-RateLimit-Remaining: 0
+Date: Sun, 04 Oct 2026 05:25:53 GMT
+X-RateLimit-Reset: 1791092006
+Retry-After: 453
+Content-Type: application/json; charset=utf-8
+Content-Length: 121
+ETag: W/"79-HnreQXVLy9LoAtcAiV1V64DQZ0I"
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"error":"Violación de política ONF: Demasiados intentos fallidos. Cuenta bloqueada temporalmente.","codigo":"SEC-429"}
+
