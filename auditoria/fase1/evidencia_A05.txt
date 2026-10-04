@@ -1,20 +1,18 @@
-HTTP/1.1 404 Not Found
-X-Powered-By: Express
-Content-Security-Policy: default-src 'none'
-X-Content-Type-Options: nosniff
-Content-Type: text/html; charset=utf-8
-Content-Length: 148
-Date: Sun, 04 Oct 2026 00:00:52 GMT
-Connection: keep-alive
-Keep-Alive: timeout=5
+# Evidencia A05 - Fuga de información (raíz /)
+# Fecha: 2026-10-03 23:01:56   Fase: fase1   Objetivo: http://localhost:3000
+# Comando: curl -i -s http://http://localhost:3000:3000/
+# Esperado: HTTP 200 con SO, versión de Node, hostname; cabeceras de seguridad ausentes
+# ----------------------------------------------------------
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Error</title>
-</head>
-<body>
-<pre>Cannot GET /api/error</pre>
-</body>
-</html>
+
+# [curl exit code: 6 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+
+# Evidencia A05 - Stack trace (JSON mal formado)
+# Fecha: 2026-10-03 23:01:56   Fase: fase1   Objetivo: http://localhost:3000
+# Comando: curl -i -s -X POST http://http://localhost:3000:3000/api/login -H 'Content-Type: application/json' -d '{"mal":'
+# Esperado: HTTP 500 con stack trace y rutas internas
+# ----------------------------------------------------------
+
+
+# [curl exit code: 6 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+

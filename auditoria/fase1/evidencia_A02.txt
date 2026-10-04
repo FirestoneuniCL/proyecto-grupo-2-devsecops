@@ -1,20 +1,18 @@
-HTTP/1.1 404 Not Found
-X-Powered-By: Express
-Content-Security-Policy: default-src 'none'
-X-Content-Type-Options: nosniff
-Content-Type: text/html; charset=utf-8
-Content-Length: 157
-Date: Sat, 03 Oct 2026 23:59:49 GMT
-Connection: keep-alive
-Keep-Alive: timeout=5
+# Evidencia A02 - Cifrado: receta por HTTP
+# Fecha: 2026-10-03 23:01:56   Fase: fase1   Objetivo: http://localhost:3000
+# Comando: curl -i -s http://http://localhost:3000:3000/api/prescription/1 -H 'Authorization: '
+# Esperado: HTTP 200 por HTTP, firma digital en texto claro
+# ----------------------------------------------------------
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Error</title>
-</head>
-<body>
-<pre>Cannot POST /api/prescriptions</pre>
-</body>
-</html>
+
+# [curl exit code: 6 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+
+# Evidencia A02 - Cifrado: receta por HTTPS
+# Fecha: 2026-10-03 23:01:56   Fase: fase1   Objetivo: http://localhost:3000
+# Comando: curl -i -s -k https://http://localhost:3000:3443/api/prescription/1 -H 'Authorization: '
+# Esperado: Falla: el servidor no tiene TLS (exit code 7/35)
+# ----------------------------------------------------------
+
+
+# [curl exit code: 6 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+

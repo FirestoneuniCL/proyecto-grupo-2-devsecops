@@ -1,20 +1,21 @@
-HTTP/1.1 404 Not Found
-X-Powered-By: Express
-Content-Security-Policy: default-src 'none'
-X-Content-Type-Options: nosniff
-Content-Type: text/html; charset=utf-8
-Content-Length: 154
-Date: Sun, 04 Oct 2026 00:09:32 GMT
-Connection: keep-alive
-Keep-Alive: timeout=5
+# Evidencia A07 - Recuperación de contraseña sin límite de intentos
+# Fecha: 2026-10-03 23:01:58   Fase: fase1   Objetivo: http://localhost:3000
+# Comando: curl -i -s -X POST http://http://localhost:3000:3000/api/recover-password (5 intentos con lista de respuestas)
+# Esperado: Todos los intentos se procesan; el 5º acierta y cambia la contraseña (fuerza bruta viable)
+# (newPassword = la misma contraseña original, para no alterar el laboratorio)
+# ----------------------------------------------------------
+>>> intento con respuesta 'rex'
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Error</title>
-</head>
-<body>
-<pre>Cannot POST /api/auth/login</pre>
-</body>
-</html>
+
+>>> intento con respuesta 'max'
+
+
+>>> intento con respuesta 'toby'
+
+
+>>> intento con respuesta 'luna'
+
+
+>>> intento con respuesta 'firulais'
+
+

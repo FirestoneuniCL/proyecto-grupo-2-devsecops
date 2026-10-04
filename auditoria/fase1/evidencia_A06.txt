@@ -1,3 +1,8 @@
+# Evidencia A06 - Componentes vulnerables (npm audit)
+# Fecha: 2026-10-03 23:01:56   Fase: fase1   Directorio: /Users/fagerstrom/Documents/proyecto-grupo-2-devsecops/auditoria/../src/vulnerable
+# Comando: cd <app> && npm audit
+# Esperado: Vulnerabilidades altas (cryptiles / boom / hoek)
+# ----------------------------------------------------------
 # npm audit report
 
 hoek  *

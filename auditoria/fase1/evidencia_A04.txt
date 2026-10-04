@@ -1,27 +1,9 @@
-HTTP/1.1 200 OK
-X-Powered-By: Express
-Accept-Ranges: bytes
-Cache-Control: public, max-age=0
-Last-Modified: Sat, 03 Oct 2026 23:20:00 GMT
-ETag: W/"213-1a104113a62"
-Content-Type: application/json; charset=UTF-8
-Content-Length: 531
-Date: Sun, 04 Oct 2026 00:00:25 GMT
-Connection: keep-alive
-Keep-Alive: timeout=5
+# Evidencia A04 - Datos de pacientes en carpeta pública
+# Fecha: 2026-10-03 23:01:56   Fase: fase1   Objetivo: http://localhost:3000
+# Comando: curl -i -s http://http://localhost:3000:3000/patients/juan-perez.json
+# Esperado: HTTP 200: ficha de Juan Perez descargable sin login
+# ----------------------------------------------------------
 
-{
-  "patientId": 1,
-  "name": "Juan Perez",
-  "ssn": "123-45-6789",
-  "dateOfBirth": "1985-06-15",
-  "address": "Calle Falsa 123, Springfield",
-  "phone": "555-0101",
-  "email": "juan.perez@email.com",
-  "emergencyContact": "Maria Perez (esposa) - 555-0102",
-  "bloodType": "O+",
-  "allergies": ["Penicilina", "Mariscos"],
-  "chronicConditions": ["Hipertension", "Diabetes Tipo 2"],
-  "insuranceNumber": "INS-001234567",
-  "note": "A04: Este archivo es accesible publicamente via web en /patients/juan-perez.json"
-}
+
+# [curl exit code: 6 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+
