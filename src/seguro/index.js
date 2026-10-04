@@ -1,7 +1,9 @@
 const express = require('express');
 const path = require('path');
 const os = require('os');
-const crypto = require('crypto'); // Criptografía nativa y segura de Node.js
+const crypto = require('crypto');
+const https = require('https'); // Nuevo módulo para A02
+const fs = require('fs');       // Nuevo módulo para A02
 
 const { authenticate, errorHandler } = require('./src/middleware');
 const authRoutes = require('./src/routes/auth');
@@ -62,6 +64,18 @@ app.use('/api', prescriptionsRoutes);
 app.use('/api', filesRoutes);
 app.use('/api', externalRoutes);
 
+// A04 SEGURO: Bloqueo explícito de acceso público a expedientes médicos
+app.use('/patients', (req, res) => {
+    res.status(403).json({
+        error: "Violación de política ONF: Los expedientes médicos no son de acceso público.",
+        codigo: "SEC-403"
+    });
+});
+
+// Configuración de archivos estáticos (ahora protegida)
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 // A05 SEGURO: Interceptor global de errores corporativos (evita Stack Traces)
 app.use((err, req, res, next) => {
     console.error("Alerta de Seguridad: Intento de solicitud malformada detectada.");
@@ -71,8 +85,15 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Arranque del servidor seguro
-app.listen(PORT, () => {
-  console.log(`Servidor seguro corriendo en http://localhost:${PORT}`);
-  console.log('ESTADO: Aplicación blindada contra OWASP Top 10.');
+// A02 SEGURO: Carga de certificados y levantamiento de servidor HTTPS
+const opcionesSSL = {
+    key: fs.readFileSync(path.join(__dirname, 'server.key')),
+    cert: fs.readFileSync(path.join(__dirname, 'server.cert'))
+};
+
+const HTTPS_PORT = 3443;
+
+https.createServer(opcionesSSL, app).listen(HTTPS_PORT, () => {
+    console.log(`Servidor SEGURO corriendo en https://localhost:${HTTPS_PORT}`);
+    console.log('ESTADO: Aplicación completamente blindada contra OWASP Top 10.');
 });
