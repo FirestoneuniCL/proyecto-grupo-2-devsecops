@@ -3,11 +3,7 @@
 **Proyecto:** MediCare Core, Sistema de Gestión de Fichas Médicas (HealthTech)
 **Grupo:** 2 | **Asignatura:** Desarrollo Seguro (CI3064)
 **Integrantes:** Fagerstrom, Zapata, Otterman
-**Fecha:** 01.OCT.026
-
-<!-- NOTA PARA EL GRUPO: revisen las leyes citadas con el material de la clase 2.1
-     y confirmen vigencias antes de entregar. Reescriban con sus propias palabras
-     lo que no los represente. -->
+**Fecha:** 04.OCT.2026
 
 ---
 
@@ -30,10 +26,10 @@ Cada vulnerabilidad de MediCare Core (acceso a fichas ajenas, tráfico sin cifra
 ## 3. Marco legal aplicable (Chile)
 
 - **Ley 19.628**, sobre protección de la vida privada y datos personales.
-- **Nueva ley de protección de datos personales (Ley 21.719)**: refuerza derechos de las personas y deberes de quien trata sus datos. *(Verificar fecha de entrada en vigencia.)*
+- **Nueva ley de protección de datos personales (Ley 21.719)**: refuerza derechos de las personas y deberes de quien trata sus datos.
 - **Ley 20.584**, derechos y deberes de los pacientes: establece el carácter **reservado de la ficha clínica**.
 - **Ley 21.459**, sobre delitos informáticos: acceso ilícito, interceptación y daño a sistemas.
-- **Ley 21.663**, Ley Marco de Ciberseguridad.
+- **Ley 21.563**, Ley Marco de Ciberseguridad.
 
 ## 4. Responsabilidad del desarrollador
 

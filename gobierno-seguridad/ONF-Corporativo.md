@@ -2,7 +2,7 @@
 
 **Organización:** HealthTech (equipo MediCare Core, Grupo 2)
 **Norma de referencia:** ISO/IEC 27034, Seguridad de las Aplicaciones
-**Versión:** 1.0 | **Fecha:** [completar]
+**Versión:** 1.1 | **Fecha:** 04.OCT.2026
 
 ---
 
@@ -52,6 +52,9 @@ Aplica a todo el ciclo de vida (ALC) de las aplicaciones que traten datos de sal
 
 ## 6. Control de versiones del documento
 
+## 6. Control de versiones del documento
+
 | Versión | Fecha        | Autor        | Cambio |
 |---|--------------|--------------|---|
-| 1.0 | [01.OCT.026] | [Fagerstrom] | Versión inicial |
+| 1.0 | 01.OCT.2026 | Fagerstrom | Versión inicial (Borrador de políticas ONF) |
+| 1.1 | 04.OCT.2026 | Fagerstrom | Revisión final y alineación con controles ASC de la Fase 2 |
