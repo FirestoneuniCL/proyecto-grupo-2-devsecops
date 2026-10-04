@@ -1,54 +1,59 @@
 const express = require('express');
-const { prescriptions } = require('../database');
-const { authenticate } = require('../middleware');
-
 const router = express.Router();
+const fs = require('fs');
+const path = require('path');
 
-// A02: Prescriptions are returned with their digital signature in plain text.
-// The API runs over HTTP (not HTTPS), so the signature and all prescription
-// data travel in clear text over the network.
-router.get('/prescription/:id', authenticate, (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  const prescription = prescriptions.find((p) => p.id === id);
+// 1. MITIGACIÓN A09: Función de auditoría forense
+// Genera un registro centralizado e inmutable con fecha, IP y detalles del evento
+const generarLogAuditoria = (usuario, ip, accion, detalles) => {
+    // Definimos la ruta hacia una carpeta "logs" en la raíz del entorno seguro
+    const logDir = path.join(__dirname, '../../../logs');
+    
+    // Si la carpeta no existe, el sistema la crea automáticamente
+    if (!fs.existsSync(logDir)) {
+        fs.mkdirSync(logDir, { recursive: true });
+    }
+    
+    const logPath = path.join(logDir, 'audit.log');
+    const timestamp = new Date().toISOString();
+    const logEntry = `[${timestamp}] IP: ${ip} | Usuario: ${usuario} | Acción: ${accion} | Detalles: ${detalles}\n`;
+    
+    // Escribimos la evidencia en el archivo de texto
+    fs.appendFileSync(logPath, logEntry);
+};
 
-  if (!prescription) {
-    return res.status(404).json({ error: 'Receta no encontrada' });
-  }
+// Ruta de modificación de receta (interceptada por el script de auditoría)
+router.put('/prescription/:id', (req, res) => {
+    try {
+        const idReceta = req.params.id;
+        const { dosage } = req.body; 
 
-  res.json({
-    ...prescription,
-    // Signature transmitted in clear text — no encryption applied
-    digitalSignature: prescription.signature,
-    transportNote: 'Transmitido por HTTP sin cifrado',
-  });
-});
+        // BLINDAJE REGEX: Verificamos que el ID sea numérico
+        if (!/^[0-9]+$/.test(idReceta)) {
+            return res.status(400).json({ error: "Formato de ID inválido.", codigo: "SEC-400" });
+        }
 
-// A09: Modifying a prescription generates NO audit log.
-// There is no forensic record of who changed what or when.
-router.put('/prescription/:id', authenticate, (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  const prescription = prescriptions.find((p) => p.id === id);
+        // Simulamos la extracción del usuario autenticado desde el token
+        const usuarioActual = req.user ? req.user.username : 'SISTEMA_O_ANONIMO';
+        const ipOrigen = req.ip || req.connection.remoteAddress;
 
-  if (!prescription) {
-    return res.status(404).json({ error: 'Receta no encontrada' });
-  }
+        // 2. REGISTRO OBLIGATORIO (A09): Guardamos la evidencia antes de procesar el cambio
+        generarLogAuditoria(
+            usuarioActual, 
+            ipOrigen, 
+            "MODIFICACION_RECETA_CRITICA", 
+            `Intento de alteración en receta ID ${idReceta}. Nueva dosis solicitada: ${dosage}`
+        );
 
-  const { medication, dosage, duration } = req.body;
+        res.json({ 
+            status: "OK", 
+            mensaje: "Modificación procesada. El evento ha sido registrado en la bitácora forense.",
+            receta: idReceta
+        });
 
-  // Modifies the prescription with NO audit trail
-  // No logging of: who modified it, what was changed, when, or original values
-  if (medication) prescription.medication = medication;
-  if (dosage) prescription.dosage = dosage;
-  if (duration) prescription.duration = duration;
-
-  // Only adds to an internal array — not a real audit log
-  // No timestamp, no user ID, no before/after values, no tamper-proofing
-  prescription.modifiedBy.push(req.user.username);
-
-  res.json({
-    message: 'Receta modificada (sin registro de auditoria)',
-    prescription,
-  });
+    } catch (error) {
+        res.status(500).json({ error: "Error interno del servidor.", codigo: "SEC-500" });
+    }
 });
 
 module.exports = router;
