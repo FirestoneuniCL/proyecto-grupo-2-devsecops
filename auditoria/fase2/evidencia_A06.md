@@ -1,0 +1,10 @@
+# Evidencia evidencia_A06
+
+```text
+# Evidencia A06 - Componentes vulnerables (npm audit)
+# Fecha: 2026-10-04 15:56:39   Fase: fase2   Directorio: /Users/fagerstrom/Documents/proyecto-grupo-2-devsecops/auditoria/../src/seguro
+# Comando: cd <app> && npm audit
+# Esperado: found 0 vulnerabilities (paquete reemplazado)
+# ----------------------------------------------------------
+found 0 vulnerabilities
+```

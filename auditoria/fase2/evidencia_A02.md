@@ -1,0 +1,45 @@
+# Evidencia evidencia_A02
+
+```text
+# Evidencia A02 - Cifrado: receta por HTTP
+# Fecha: 2026-10-04 15:56:39   Fase: fase2   Objetivo: localhost
+# Comando: curl -i -s http://localhost:3000/api/prescription/1 -H 'Authorization: <TOKEN_DOCTOR>'
+# Esperado: HTTP 301/403: el HTTP plano ya no entrega la receta
+# ----------------------------------------------------------
+HTTP/1.1 301 Moved Permanently
+Location: https://localhost:3443/api/prescription/1
+Content-Length: 0
+X-Content-Type-Options: nosniff
+Date: Sun, 04 Oct 2026 18:56:39 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+
+# [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+
+# Evidencia A02 - Cifrado: receta por HTTPS
+# Fecha: 2026-10-04 15:56:39   Fase: fase2   Objetivo: localhost
+# Comando: curl -i -s -k https://localhost:3443/api/prescription/1 -H 'Authorization: <TOKEN_DOCTOR>'
+# Esperado: HTTP 200 sobre TLS, con cabecera Strict-Transport-Security
+# ----------------------------------------------------------
+HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Referrer-Policy: no-referrer
+Cache-Control: no-store
+Cross-Origin-Resource-Policy: same-origin
+Permissions-Policy: geolocation=(), camera=(), microphone=()
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Type: application/json; charset=utf-8
+Content-Length: 241
+ETag: W/"f1-QzvUzWVXgmnz7r6fM1ZOqsZ4g44"
+Date: Sun, 04 Oct 2026 18:56:39 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"id":1,"patientId":1,"doctorId":1,"medication":"Losartan 50mg","dosage":"1 tableta cada 24 horas","duration":"30 dias","date":"2024-01-15","signature":"e836ba0493ee7ee2d535e606e54df97c2ef620afbac1e35382622d597d408a89","signatureValid":true}
+
+# [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+
+```

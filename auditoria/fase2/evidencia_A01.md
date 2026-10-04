@@ -1,0 +1,29 @@
+# Evidencia evidencia_A01
+
+```text
+# Evidencia A01 - Control de acceso roto (IDOR)
+# Fecha: 2026-10-04 15:56:39   Fase: fase2   Objetivo: localhost
+# Comando: curl -i -s -k https://localhost:3443/api/record/1 -H 'Authorization: <TOKEN_PACIENTE>'
+# Esperado: HTTP 403: el paciente solo puede ver su propia ficha
+# ----------------------------------------------------------
+HTTP/1.1 403 Forbidden
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Referrer-Policy: no-referrer
+Cache-Control: no-store
+Cross-Origin-Resource-Policy: same-origin
+Permissions-Policy: geolocation=(), camera=(), microphone=()
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Type: application/json; charset=utf-8
+Content-Length: 46
+ETag: W/"2e-NC+EyK6lp/vOI8vYVQcVJYbrkT0"
+Date: Sun, 04 Oct 2026 18:56:39 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"error":"Acceso denegado","codigo":"SEC-403"}
+
+# [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+
+```

@@ -1,0 +1,43 @@
+# Evidencia evidencia_A08
+
+```text
+# Evidencia A08 - Subida de archivo ejecutable
+# Fecha: 2026-10-04 03:40:21   Fase: fase1   Objetivo: localhost
+# Comando: curl -i -s -X POST http://localhost:3000/api/upload-exam -H 'Authorization: <TOKEN_DOCTOR>' -F examFile=@/var/folders/2j/73m04jnn7m1f73h9n0zlsxmc0000gn/T/tmp.71ILftryFA/examen_malicioso.exe
+# Esperado: HTTP 200: se acepta .exe y queda guardado
+# ----------------------------------------------------------
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 217
+ETag: W/"d9-GBZgmGW5yBEQ/MG0qs4BXivrhxg"
+Date: Sun, 04 Oct 2026 06:40:21 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"message":"Archivo subido exitosamente","filename":"examen_malicioso.exe","size":22,"mimetype":"application/octet-stream","url":"/uploads/examen_malicioso.exe","warning":"No se realizo validacion de tipo de archivo"}
+
+# [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+
+# Evidencia A08 - Descarga del archivo subido
+# Fecha: 2026-10-04 03:40:21   Fase: fase1   Objetivo: localhost
+# Comando: curl -i -s http://localhost:3000/uploads/examen_malicioso.exe
+# Esperado: HTTP 200: el .exe es accesible desde la web
+# ----------------------------------------------------------
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Accept-Ranges: bytes
+Cache-Control: public, max-age=0
+Last-Modified: Sun, 04 Oct 2026 06:40:21 GMT
+ETag: W/"16-1a105a46018"
+Content-Type: application/octet-stream
+Content-Length: 22
+Date: Sun, 04 Oct 2026 06:40:21 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+MZ-ejecutable-simulado
+
+# [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+
+```

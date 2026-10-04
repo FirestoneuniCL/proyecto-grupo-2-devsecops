@@ -1,0 +1,54 @@
+# Evidencia evidencia_A05
+
+```text
+# Evidencia A05 - Fuga de información (raíz /)
+# Fecha: 2026-10-04 15:56:39   Fase: fase2   Objetivo: localhost
+# Comando: curl -i -s -k https://localhost:3443/
+# Esperado: Respuesta mínima, sin datos del servidor; cabeceras helmet presentes
+# ----------------------------------------------------------
+HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Referrer-Policy: no-referrer
+Cache-Control: no-store
+Cross-Origin-Resource-Policy: same-origin
+Permissions-Policy: geolocation=(), camera=(), microphone=()
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Type: application/json; charset=utf-8
+Content-Length: 41
+ETag: W/"29-JQIHG4LKD2Bs70Ax/CVbYoq1VzM"
+Date: Sun, 04 Oct 2026 18:56:39 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"app":"MediCare Core API","status":"ok"}
+
+# [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+
+# Evidencia A05 - Stack trace (JSON mal formado)
+# Fecha: 2026-10-04 15:56:39   Fase: fase2   Objetivo: localhost
+# Comando: curl -i -s -k -X POST https://localhost:3443/api/login -H 'Content-Type: application/json' -d '{"mal":'
+# Esperado: HTTP 400 con mensaje genérico, sin stack ni versiones
+# ----------------------------------------------------------
+HTTP/1.1 400 Bad Request
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Referrer-Policy: no-referrer
+Cache-Control: no-store
+Cross-Origin-Resource-Policy: same-origin
+Permissions-Policy: geolocation=(), camera=(), microphone=()
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Type: application/json; charset=utf-8
+Content-Length: 49
+ETag: W/"31-IzmXmamMustSDLrqnA23EBD9v9Y"
+Date: Sun, 04 Oct 2026 18:56:39 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"error":"Solicitud invalida","codigo":"SEC-400"}
+
+# [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+
+```

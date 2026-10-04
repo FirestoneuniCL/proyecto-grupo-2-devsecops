@@ -1,0 +1,27 @@
+# Evidencia evidencia_A06
+
+```text
+# Evidencia A06 - Componentes vulnerables (npm audit)
+# Fecha: 2026-10-04 03:40:20   Fase: fase1   Directorio: /Users/fagerstrom/Documents/proyecto-grupo-2-devsecops/auditoria/../src/vulnerable
+# Comando: cd <app> && npm audit
+# Esperado: Vulnerabilidades altas (cryptiles / boom / hoek)
+# ----------------------------------------------------------
+# npm audit report
+
+hoek  *
+Severity: high
+hoek subject to prototype pollution via the clone function. - https://github.com/advisories/GHSA-c429-5p7v-vgjp
+No fix available
+node_modules/hoek
+  boom  *
+  Depends on vulnerable versions of hoek
+  node_modules/boom
+    cryptiles  *
+    Depends on vulnerable versions of boom
+    node_modules/cryptiles
+
+3 high severity vulnerabilities
+
+Some issues need review, and may require choosing
+a different dependency.
+```

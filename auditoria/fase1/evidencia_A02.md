@@ -1,0 +1,31 @@
+# Evidencia evidencia_A02
+
+```text
+# Evidencia A02 - Cifrado: receta por HTTP
+# Fecha: 2026-10-04 03:40:20   Fase: fase1   Objetivo: localhost
+# Comando: curl -i -s http://localhost:3000/api/prescription/1 -H 'Authorization: <TOKEN_DOCTOR>'
+# Esperado: HTTP 200 por HTTP, firma digital en texto claro
+# ----------------------------------------------------------
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 314
+ETag: W/"13a-VJIheIvaTe+2bdaQxgQv2N1/o10"
+Date: Sun, 04 Oct 2026 06:40:19 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"id":1,"patientId":1,"doctorId":1,"medication":"Losartan 50mg","dosage":"1 tableta cada 24 horas","duration":"30 dias","date":"2024-01-15","signed":true,"signature":"FAKE_SIGNATURE_NOT_ENCRYPTED","modifiedBy":[],"digitalSignature":"FAKE_SIGNATURE_NOT_ENCRYPTED","transportNote":"Transmitido por HTTP sin cifrado"}
+
+# [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+
+# Evidencia A02 - Cifrado: receta por HTTPS
+# Fecha: 2026-10-04 03:40:20   Fase: fase1   Objetivo: localhost
+# Comando: curl -i -s -k https://localhost:3443/api/prescription/1 -H 'Authorization: <TOKEN_DOCTOR>'
+# Esperado: Falla: el servidor no tiene TLS (exit code 7/35)
+# ----------------------------------------------------------
+
+
+# [curl exit code: 7 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+
+```

