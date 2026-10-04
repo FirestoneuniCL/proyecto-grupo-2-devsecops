@@ -1,28 +1,25 @@
 # Evidencia A01 - Control de acceso roto (IDOR)
-# Fecha: 2026-10-04 02:25:51   Fase: fase2   Objetivo: localhost
-# Comando: curl -i -s -k https://localhost:3443/api/record/1 -H 'Authorization: <TOKEN_DOCTOR>'
+# Fecha: 2026-10-04 03:34:40   Fase: fase2   Objetivo: localhost
+# Comando: curl -i -s -k https://localhost:3443/api/record/1 -H 'Authorization: <TOKEN_PACIENTE>'
 # Esperado: HTTP 403: el paciente solo puede ver su propia ficha
 # ----------------------------------------------------------
-HTTP/1.1 404 Not Found
-X-Powered-By: Express
-Content-Security-Policy: default-src 'none'
+HTTP/1.1 403 Forbidden
 X-Content-Type-Options: nosniff
-Content-Type: text/html; charset=utf-8
-Content-Length: 151
-Date: Sun, 04 Oct 2026 05:25:51 GMT
+X-Frame-Options: DENY
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Referrer-Policy: no-referrer
+Cache-Control: no-store
+Cross-Origin-Resource-Policy: same-origin
+Permissions-Policy: geolocation=(), camera=(), microphone=()
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Type: application/json; charset=utf-8
+Content-Length: 46
+ETag: W/"2e-NC+EyK6lp/vOI8vYVQcVJYbrkT0"
+Date: Sun, 04 Oct 2026 06:34:40 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Error</title>
-</head>
-<body>
-<pre>Cannot GET /api/record/1</pre>
-</body>
-</html>
+{"error":"Acceso denegado","codigo":"SEC-403"}
 
 # [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
 

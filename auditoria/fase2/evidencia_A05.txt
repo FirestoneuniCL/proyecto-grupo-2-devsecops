@@ -1,36 +1,50 @@
 # Evidencia A05 - Fuga de información (raíz /)
-# Fecha: 2026-10-04 02:25:51   Fase: fase2   Objetivo: localhost
+# Fecha: 2026-10-04 03:34:40   Fase: fase2   Objetivo: localhost
 # Comando: curl -i -s -k https://localhost:3443/
 # Esperado: Respuesta mínima, sin datos del servidor; cabeceras helmet presentes
 # ----------------------------------------------------------
 HTTP/1.1 200 OK
-X-Powered-By: Express
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Referrer-Policy: no-referrer
+Cache-Control: no-store
+Cross-Origin-Resource-Policy: same-origin
+Permissions-Policy: geolocation=(), camera=(), microphone=()
+Strict-Transport-Security: max-age=31536000; includeSubDomains
 Content-Type: application/json; charset=utf-8
-Content-Length: 149
-ETag: W/"95-I3IdyJe8Kxy2F4M5zdj4A3at5Mg"
-Date: Sun, 04 Oct 2026 05:25:51 GMT
+Content-Length: 41
+ETag: W/"29-JQIHG4LKD2Bs70Ax/CVbYoq1VzM"
+Date: Sun, 04 Oct 2026 06:34:40 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
-{"app":"API de Recetas e Historiales Clínicos (Segura)","version":"2.0.0","environment":"production","serverInfo":{"estado":"Operativo y Blindado"}}
+{"app":"MediCare Core API","status":"ok"}
 
 # [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
 
 # Evidencia A05 - Stack trace (JSON mal formado)
-# Fecha: 2026-10-04 02:25:51   Fase: fase2   Objetivo: localhost
+# Fecha: 2026-10-04 03:34:40   Fase: fase2   Objetivo: localhost
 # Comando: curl -i -s -k -X POST https://localhost:3443/api/login -H 'Content-Type: application/json' -d '{"mal":'
 # Esperado: HTTP 400 con mensaje genérico, sin stack ni versiones
 # ----------------------------------------------------------
 HTTP/1.1 400 Bad Request
-X-Powered-By: Express
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Referrer-Policy: no-referrer
+Cache-Control: no-store
+Cross-Origin-Resource-Policy: same-origin
+Permissions-Policy: geolocation=(), camera=(), microphone=()
+Strict-Transport-Security: max-age=31536000; includeSubDomains
 Content-Type: application/json; charset=utf-8
-Content-Length: 106
-ETag: W/"6a-rK54tDqQ3hFZMkTMtKAJOcQHY0w"
-Date: Sun, 04 Oct 2026 05:25:51 GMT
+Content-Length: 49
+ETag: W/"31-IzmXmamMustSDLrqnA23EBD9v9Y"
+Date: Sun, 04 Oct 2026 06:34:40 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
-{"error":"Violación de política ONF: Solicitud malformada o error de procesamiento.","codigo":"SEC-400"}
+{"error":"Solicitud invalida","codigo":"SEC-400"}
 
 # [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
 

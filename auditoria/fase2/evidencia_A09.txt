@@ -1,18 +1,25 @@
 # Evidencia A09 - Modificación de receta sin auditoría
-# Fecha: 2026-10-04 02:25:53   Fase: fase2   Objetivo: localhost
+# Fecha: 2026-10-04 03:34:41   Fase: fase2   Objetivo: localhost
 # Comando: curl -i -s -k -X PUT https://localhost:3443/api/prescription/1 -H 'Authorization: <TOKEN_DOCTOR>' -H 'Content-Type: application/json' -d '{"dosage":"DOSIS-MODIFICADA-PARA-AUDITORIA"}'
 # Esperado: HTTP 200 y se genera una línea en logs/audit.log (usuario, IP, antes/después)
 # ----------------------------------------------------------
 HTTP/1.1 200 OK
-X-Powered-By: Express
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Referrer-Policy: no-referrer
+Cache-Control: no-store
+Cross-Origin-Resource-Policy: same-origin
+Permissions-Policy: geolocation=(), camera=(), microphone=()
+Strict-Transport-Security: max-age=31536000; includeSubDomains
 Content-Type: application/json; charset=utf-8
-Content-Length: 119
-ETag: W/"77-JWOkr1mIe7kv13dQE92PRwNh0Rs"
-Date: Sun, 04 Oct 2026 05:25:53 GMT
+Content-Length: 296
+ETag: W/"128-vhD13A++1Z/IWI5D/Dc8UvrIsDE"
+Date: Sun, 04 Oct 2026 06:34:41 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
-{"status":"OK","mensaje":"Modificación procesada. El evento ha sido registrado en la bitácora forense.","receta":"1"}
+{"message":"Receta modificada","prescription":{"id":1,"patientId":1,"doctorId":1,"medication":"Losartan 50mg","dosage":"DOSIS-MODIFICADA-PARA-AUDITORIA","duration":"30 dias","date":"2024-01-15","signature":"811ab732e094af44f9bbd6a5d12d4d62d31c92a35811b9a53a813cfbf24ce4f8","signatureValid":true}}
 
 # [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
 

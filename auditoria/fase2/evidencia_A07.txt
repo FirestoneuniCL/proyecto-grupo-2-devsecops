@@ -1,86 +1,106 @@
 # Evidencia A07 - Recuperación de contraseña sin límite de intentos
-# Fecha: 2026-10-04 02:25:53   Fase: fase2   Objetivo: localhost
+# Fecha: 2026-10-04 03:34:40   Fase: fase2   Objetivo: localhost
 # Comando: curl -i -s -X POST https://localhost:3443/api/recover-password (5 intentos con lista de respuestas)
 # Esperado: Bloqueo temporal HTTP 429 tras pocos intentos; nunca llega a acertar
 # (newPassword = la misma contraseña original, para no alterar el laboratorio)
 # ----------------------------------------------------------
 >>> intento con respuesta 'rex'
 HTTP/1.1 429 Too Many Requests
-X-Powered-By: Express
-X-RateLimit-Limit: 3
-X-RateLimit-Remaining: 0
-Date: Sun, 04 Oct 2026 05:25:53 GMT
-X-RateLimit-Reset: 1791092006
-Retry-After: 453
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Referrer-Policy: no-referrer
+Cache-Control: no-store
+Cross-Origin-Resource-Policy: same-origin
+Permissions-Policy: geolocation=(), camera=(), microphone=()
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Retry-After: 702
 Content-Type: application/json; charset=utf-8
-Content-Length: 121
-ETag: W/"79-HnreQXVLy9LoAtcAiV1V64DQZ0I"
+Content-Length: 70
+ETag: W/"46-QWP58UMzIvKnrHo9iTMmFUM/FPs"
+Date: Sun, 04 Oct 2026 06:34:40 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
-{"error":"Violación de política ONF: Demasiados intentos fallidos. Cuenta bloqueada temporalmente.","codigo":"SEC-429"}
+{"error":"Demasiados intentos. Intente mas tarde.","codigo":"SEC-429"}
 
 >>> intento con respuesta 'max'
 HTTP/1.1 429 Too Many Requests
-X-Powered-By: Express
-X-RateLimit-Limit: 3
-X-RateLimit-Remaining: 0
-Date: Sun, 04 Oct 2026 05:25:53 GMT
-X-RateLimit-Reset: 1791092006
-Retry-After: 453
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Referrer-Policy: no-referrer
+Cache-Control: no-store
+Cross-Origin-Resource-Policy: same-origin
+Permissions-Policy: geolocation=(), camera=(), microphone=()
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Retry-After: 702
 Content-Type: application/json; charset=utf-8
-Content-Length: 121
-ETag: W/"79-HnreQXVLy9LoAtcAiV1V64DQZ0I"
+Content-Length: 70
+ETag: W/"46-QWP58UMzIvKnrHo9iTMmFUM/FPs"
+Date: Sun, 04 Oct 2026 06:34:40 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
-{"error":"Violación de política ONF: Demasiados intentos fallidos. Cuenta bloqueada temporalmente.","codigo":"SEC-429"}
+{"error":"Demasiados intentos. Intente mas tarde.","codigo":"SEC-429"}
 
 >>> intento con respuesta 'toby'
 HTTP/1.1 429 Too Many Requests
-X-Powered-By: Express
-X-RateLimit-Limit: 3
-X-RateLimit-Remaining: 0
-Date: Sun, 04 Oct 2026 05:25:53 GMT
-X-RateLimit-Reset: 1791092006
-Retry-After: 453
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Referrer-Policy: no-referrer
+Cache-Control: no-store
+Cross-Origin-Resource-Policy: same-origin
+Permissions-Policy: geolocation=(), camera=(), microphone=()
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Retry-After: 702
 Content-Type: application/json; charset=utf-8
-Content-Length: 121
-ETag: W/"79-HnreQXVLy9LoAtcAiV1V64DQZ0I"
+Content-Length: 70
+ETag: W/"46-QWP58UMzIvKnrHo9iTMmFUM/FPs"
+Date: Sun, 04 Oct 2026 06:34:40 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
-{"error":"Violación de política ONF: Demasiados intentos fallidos. Cuenta bloqueada temporalmente.","codigo":"SEC-429"}
+{"error":"Demasiados intentos. Intente mas tarde.","codigo":"SEC-429"}
 
 >>> intento con respuesta 'luna'
 HTTP/1.1 429 Too Many Requests
-X-Powered-By: Express
-X-RateLimit-Limit: 3
-X-RateLimit-Remaining: 0
-Date: Sun, 04 Oct 2026 05:25:53 GMT
-X-RateLimit-Reset: 1791092006
-Retry-After: 453
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Referrer-Policy: no-referrer
+Cache-Control: no-store
+Cross-Origin-Resource-Policy: same-origin
+Permissions-Policy: geolocation=(), camera=(), microphone=()
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Retry-After: 702
 Content-Type: application/json; charset=utf-8
-Content-Length: 121
-ETag: W/"79-HnreQXVLy9LoAtcAiV1V64DQZ0I"
+Content-Length: 70
+ETag: W/"46-QWP58UMzIvKnrHo9iTMmFUM/FPs"
+Date: Sun, 04 Oct 2026 06:34:40 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
-{"error":"Violación de política ONF: Demasiados intentos fallidos. Cuenta bloqueada temporalmente.","codigo":"SEC-429"}
+{"error":"Demasiados intentos. Intente mas tarde.","codigo":"SEC-429"}
 
 >>> intento con respuesta 'firulais'
 HTTP/1.1 429 Too Many Requests
-X-Powered-By: Express
-X-RateLimit-Limit: 3
-X-RateLimit-Remaining: 0
-Date: Sun, 04 Oct 2026 05:25:53 GMT
-X-RateLimit-Reset: 1791092006
-Retry-After: 453
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Referrer-Policy: no-referrer
+Cache-Control: no-store
+Cross-Origin-Resource-Policy: same-origin
+Permissions-Policy: geolocation=(), camera=(), microphone=()
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Retry-After: 702
 Content-Type: application/json; charset=utf-8
-Content-Length: 121
-ETag: W/"79-HnreQXVLy9LoAtcAiV1V64DQZ0I"
+Content-Length: 70
+ETag: W/"46-QWP58UMzIvKnrHo9iTMmFUM/FPs"
+Date: Sun, 04 Oct 2026 06:34:41 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
-{"error":"Violación de política ONF: Demasiados intentos fallidos. Cuenta bloqueada temporalmente.","codigo":"SEC-429"}
+{"error":"Demasiados intentos. Intente mas tarde.","codigo":"SEC-429"}
 

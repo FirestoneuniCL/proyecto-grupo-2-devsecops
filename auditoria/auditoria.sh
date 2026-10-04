@@ -121,7 +121,7 @@ f="$OUT/evidencia_A06.txt"
     echo "No se encontró $APP_DIR o npm. Ejecuta este paso en la máquina donde está clonado el repo."
   fi
 } > "$f"
-printf "[A06] %-34s -> %s\n" "Dependencias (npm audit)" "$(grep -m1 -E 'vulnerabilit' "$f" || echo 'ver archivo')"
+printf "[A06] %-34s -> %s\n" "Dependencias (npm audit)" "$(grep -v '^#' "$f" | grep -m1 -E 'vulnerabilit' || echo 'ver archivo')"
 
 # ---------------------------------------------------------------- A07
 f="$OUT/evidencia_A07.txt"

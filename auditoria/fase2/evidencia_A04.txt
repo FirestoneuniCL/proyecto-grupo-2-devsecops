@@ -1,35 +1,25 @@
 # Evidencia A04 - Datos de pacientes en carpeta pública
-# Fecha: 2026-10-04 02:25:51   Fase: fase2   Objetivo: localhost
+# Fecha: 2026-10-04 03:34:40   Fase: fase2   Objetivo: localhost
 # Comando: curl -i -s -k https://localhost:3443/patients/juan-perez.json
 # Esperado: HTTP 404/401: ya no es accesible públicamente
 # ----------------------------------------------------------
-HTTP/1.1 200 OK
-X-Powered-By: Express
-Accept-Ranges: bytes
-Cache-Control: public, max-age=0
-Last-Modified: Sun, 04 Oct 2026 02:27:32 GMT
-ETag: W/"204-1a104bcea94"
-Content-Type: application/json; charset=UTF-8
-Content-Length: 516
-Date: Sun, 04 Oct 2026 05:25:51 GMT
+HTTP/1.1 404 Not Found
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Referrer-Policy: no-referrer
+Cache-Control: no-store
+Cross-Origin-Resource-Policy: same-origin
+Permissions-Policy: geolocation=(), camera=(), microphone=()
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Type: application/json; charset=utf-8
+Content-Length: 52
+ETag: W/"34-QljBk0wIY0iZsYVIoQW+V70YM/I"
+Date: Sun, 04 Oct 2026 06:34:40 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
-{
-  "patientId": 1,
-  "name": "Juan Perez",
-  "ssn": "123-45-6789",
-  "dateOfBirth": "1985-06-15",
-  "address": "Calle Falsa 123, Springfield",
-  "phone": "555-0101",
-  "email": "juan.perez@email.com",
-  "emergencyContact": "Maria Perez (esposa) - 555-0102",
-  "bloodType": "O+",
-  "allergies": ["Penicilina", "Mariscos"],
-  "chronicConditions": ["Hipertension", "Diabetes Tipo 2"],
-  "insuranceNumber": "INS-001234567",
-  "note": "A04: Este archivo es accesible publicamente via web en /patients/juan-perez.json"
-}
+{"error":"Recurso no encontrado","codigo":"SEC-404"}
 
 # [curl exit code: 0 (0 = OK, 7 = conexión rechazada, 35/60 = error TLS)]
 
