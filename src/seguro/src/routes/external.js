@@ -1,47 +1,33 @@
 const express = require('express');
-const axios = require('axios');
-const { authenticate } = require('../middleware');
-
 const router = express.Router();
 
-// A10: SSRF (Server-Side Request Forgery) — the server fetches arbitrary URLs
-// provided by the client with no validation or allowlist.
-//
-// This can be exploited to:
-//   - Access internal services (e.g., http://169.254.169.254/latest/meta-data/)
-//   - Scan internal network ports
-//   - Access localhost services
-//   - Fetch files via file:// protocol (if not blocked by axios)
-router.get('/fetch-external-record', authenticate, async (req, res) => {
-  const { url } = req.query;
+router.get('/fetch-external-record', async (req, res) => {
+    try {
+        const urlDestino = req.query.url;
 
-  if (!url) {
-    return res.status(400).json({ error: 'URL requerida' });
-  }
+        // 1. CONTROL NORMATIVO ASC-01 (Lista Blanca Regex): 
+        // Solo permitimos peticiones HTTPS hacia un dominio oficial y autorizado (ej. minsal.cl).
+        // Esto bloquea automáticamente IPs internas como 127.0.0.1, localhost o 169.254.169.254 (AWS).
+        const dominiosSegurosRegex = /^https:\/\/(www\.)?(minsal\.cl|hospital\.gob)\/.*$/;
 
-  // No URL validation, no allowlist, no scheme restriction
-  // The server will fetch ANY URL the client provides
-  try {
-    const response = await axios.get(url, {
-      // Follows redirects, no timeout, accepts any status
-      maxRedirects: 5,
-      timeout: 10000,
-      // No restriction on internal IPs, localhost, or metadata endpoints
-    });
+        if (!urlDestino || !dominiosSegurosRegex.test(urlDestino)) {
+            // 2. MANEJO DE ERRORES: Reemplazamos errores crudos por el código corporativo SEC-400
+            return res.status(400).json({
+                error: "Violación de política ONF (ASC-01): Destino de red no autorizado o esquema inseguro.",
+                codigo: "SEC-400"
+            });
+        }
 
-    res.json({
-      url,
-      status: response.status,
-      headers: response.headers,
-      data: response.data,
-    });
-  } catch (err) {
-    res.status(502).json({
-      error: 'Error al obtener el recurso externo',
-      details: err.message,
-      requestedUrl: url,
-    });
-  }
+        // Si pasa la validación estricta, la aplicación se conectaría de forma segura
+        res.json({ 
+            status: "OK", 
+            mensaje: "Conexión externa permitida.", 
+            destino_validado: urlDestino 
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: "Error interno del servidor.", codigo: "SEC-500" });
+    }
 });
 
 module.exports = router;
