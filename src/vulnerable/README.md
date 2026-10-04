@@ -1,6 +1,3 @@
-# API de Recetas e Historiales Clinicos
-
-**ADVERTENCIA: Esta aplicacion contiene vulnerabilidades intencionales. NO usar en produccion. Solo para fines educativos y de evaluacion de seguridad.**
 
 ## Contexto
 
