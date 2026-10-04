@@ -1,44 +1,44 @@
 const express = require('express');
-const multer = require('multer');
-const path = require('path');
-const { authenticate } = require('../middleware');
-
 const router = express.Router();
+const multer = require('multer');
 
-// A08: File upload with NO content validation.
-// Accepts ANY file type including executables (.exe, .bat, .sh, .php).
-// No MIME type check, no file extension whitelist, no size limit enforcement.
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../../public/uploads'));
-  },
-  filename: (req, file, cb) => {
-    // Keeps the original filename — no sanitization
-    cb(null, file.originalname);
-  },
-});
-
+// 1. BLINDAJE REGEX (Lista Blanca) en configuración de subida:
 const upload = multer({
-  storage,
-  // No file filter — all file types accepted
-  // No size limit specified (uses multer default of infinity)
+    dest: 'public/uploads/',
+    fileFilter: (req, file, cb) => {
+        // Permitimos estrictamente PDF o imágenes. El Regex bloquea al instante .exe, .sh, .bat
+        const extensionSegura = /\.(pdf|jpg|jpeg|png)$/i;
+        if (!extensionSegura.test(file.originalname)) {
+            return cb(new Error('FormatoBloqueado'), false);
+        }
+        cb(null, true);
+    }
 });
 
-// Upload medical exam files
-router.post('/upload-exam', authenticate, upload.single('examFile'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'No se proporciono ningun archivo' });
-  }
+// Nota: Asegúrate de que la ruta coincida con tu archivo ('/upload-exam' o '/upload' según corresponda)
+router.post('/upload-exam', upload.single('examFile'), (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({
+                error: "Violación de política ONF: Archivo ausente.",
+                codigo: "SEC-400"
+            });
+        }
+        res.json({ status: "OK", mensaje: "Examen médico guardado con éxito.", archivo: req.file.filename });
+    } catch (error) {
+        res.status(500).json({ error: "Error interno del servidor.", codigo: "SEC-500" });
+    }
+});
 
-  // No validation of file content, type, or extension
-  res.json({
-    message: 'Archivo subido exitosamente',
-    filename: req.file.originalname,
-    size: req.file.size,
-    mimetype: req.file.mimetype,
-    url: `/uploads/${req.file.originalname}`,
-    warning: 'No se realizo validacion de tipo de archivo',
-  });
+// 2. MANEJO DE ERRORES: Atrapamos el intento de subir ejecutables sin que el servidor caiga
+router.use((err, req, res, next) => {
+    if (err.message === 'FormatoBloqueado') {
+        return res.status(415).json({
+            error: "Violación de política ONF (ASC-02): El tipo de archivo no está permitido.",
+            codigo: "SEC-415"
+        });
+    }
+    next(err);
 });
 
 module.exports = router;

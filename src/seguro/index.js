@@ -59,7 +59,7 @@ app.get('/api/verify-signature', authenticate, (req, res) => {
   res.json({ valid, package: 'cryptiles (CVE-2018-1000620)' });
 });
 
-// Routes
+// Rutas
 app.use('/api', authRoutes);
 app.use('/api', recordsRoutes);
 app.use('/api/diagnosis', diagnosisRoutes);
@@ -67,8 +67,14 @@ app.use('/api', prescriptionsRoutes);
 app.use('/api', filesRoutes);
 app.use('/api', externalRoutes);
 
-// A05: Detailed error handler that exposes stack traces and server details
-app.use(errorHandler);
+// BLINDAJE GLOBAL A05: Interceptor de errores JSON mal formados o fallos críticos
+app.use((err, req, res, next) => {
+    console.error("Alerta de Seguridad: Intento de evasión o solicitud malformada detectada.");
+    res.status(400).json({
+        error: "Violación de política ONF: Solicitud malformada o error de procesamiento.",
+        codigo: "SEC-400"
+    });
+});
 
 // A02: Server runs on HTTP only — no HTTPS, no TLS certificate
 app.listen(PORT, () => {
